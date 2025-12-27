@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chatbot</title>
+</head>
+<body>
+
+<h2>Mini Chatbot</h2>
+<div id="chat"></div>
+<input id="input" placeholder="type here..." />
+
+<script>
+  const input = document.getElementById('input')
+  const chat = document.getElementById('chat')
+
+  input.addEventListener('keydown', async (e) => {
+    if (e.key === 'Enter') {
+      const msg = input.value
+      input.value = ''
+
+      chat.innerHTML += `<p>You: ${msg}</p>`
+
+      const res = await fetch('http://localhost:3000/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg })
+      })
+
+      const data = await res.json()
+      chat.innerHTML += `<p>Bot: ${data.reply}</p>`
+    }
+  })
+</script>
+
+</body>
+</html>
